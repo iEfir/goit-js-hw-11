@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { Notify } from 'notiflix';
 
 export async function fetchPictures(searchQuery, searchPage) {
   const BASE_URL = 'https://pixabay.com/api/';
@@ -7,13 +6,7 @@ export async function fetchPictures(searchQuery, searchPage) {
 
   const fetchPictures = await axios.get(url);
   const pictures = fetchPictures.data.hits;
-  if (fetchPictures.data.totalHits) {
-    Notify.success(`Hooray! We found ${fetchPictures.data.totalHits} images.`);
-  }
-  if (!fetchPictures.data.totalHits) {
-    Notify.failure(
-      'Sorry, there are no images matching your search query. Please try again.'
-    );
-  }
-  return pictures;
+  const totalHitsPictures = fetchPictures.data.totalHits;
+
+  return { pictures: pictures, totalHitsPictures: totalHitsPictures };
 }
