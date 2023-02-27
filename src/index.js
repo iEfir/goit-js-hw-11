@@ -16,7 +16,7 @@ let searchQuery = '';
 let searchPage = 1;
 
 form.addEventListener('submit', onSubmit);
-button.addEventListener('click', onButton);
+button.addEventListener('click', onButtonLoadMore);
 
 async function onSubmit(e) {
   e.preventDefault();
@@ -44,9 +44,9 @@ async function onSubmit(e) {
       );
     }
 
-    if (totalHitsPictures >= 40) {
+    if (totalHitsPictures > 40) {
       button.classList.remove('is-hidden');
-    } else button.classList.add('is-hidden');
+    }
 
     const dataOfPictures = pictures.map(i => {
       return galleryEl(i);
@@ -59,18 +59,16 @@ async function onSubmit(e) {
   }
 }
 
-async function onButton() {
+async function onButtonLoadMore() {
   searchPage += 1;
-  try {
-    const { pictures, totalHitsPictures } = await fetchPictures(
-      searchQuery,
-      searchPage
-    );
 
-    if (totalHitsPictures < 40) {
+  try {
+    const { pictures } = await fetchPictures(searchQuery, searchPage);
+
+    if (pictures.length <= 39) {
       Notify.info("We're sorry, but you've reached the end of search results.");
       button.classList.add('is-hidden');
-    } else button.classList.remove('is-hidden');
+    }
 
     const dataOfPictures = pictures.map(i => {
       return galleryEl(i);
