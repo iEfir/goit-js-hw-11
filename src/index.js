@@ -39,6 +39,7 @@ async function onSubmit(e) {
     if (totalHitsPictures) {
       Notify.success(`Hooray! We found ${totalHitsPictures} images.`);
     } else {
+      button.classList.add('is-hidden');
       Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
